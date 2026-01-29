@@ -1,2 +1,547 @@
-<!doctype html><html lang="en"><head><meta name="min-version" content="1769626313252"><meta name="version" content="07ec97b"><meta charset="utf-8"/><link rel="preconnect" crossorigin href="https://pplx-next-static-public.perplexity.ai"/><link rel="preconnect" crossorigin href="https://r2cdn.perplexity.ai"/><link rel="preload" href="https://r2cdn.perplexity.ai/fonts/PPLX-Sans-Beta-VF.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2" as="font" type="font/woff2" crossorigin/><meta name="theme-color" media="(prefers-color-scheme: light)" content="#FCFCF9"/><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#100E12"/><style>html:not(.todesktop){background-color:#fcfcf9}@media (prefers-color-scheme:light){html:not([data-color-scheme]){background-color:#fcfcf9}}@media (prefers-color-scheme:dark){html:not([data-color-scheme]){background-color:#100e12}}html[data-color-scheme=light]:not(.todesktop){background-color:#fcfcf9!important}html[data-color-scheme=dark]:not(.todesktop){background-color:#100e12!important}</style><script>!function(){"use strict";const e="pplx.visitor-id",t="pplx.session-id";function r(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)e[n]=r[n]}return e}var n=function e(t,n){function o(e,o,c){if(!(typeof document>"u")){"number"==typeof(c=r({},n,c)).expires&&(c.expires=new Date(Date.now()+864e5*c.expires)),c.expires&&(c.expires=c.expires.toUTCString()),e=encodeURIComponent(e).replace(/%(2[346B]|5E|60|7C)/g,decodeURIComponent).replace(/[()]/g,escape);var i="";for(var a in c)c[a]&&(i+="; "+a,!0!==c[a]&&(i+="="+c[a].split(";")[0]));return document.cookie=e+"="+t.write(o,e)+i}}return Object.create({set:o,get:function(e){if(!(typeof document>"u"||arguments.length&&!e)){for(var r=document.cookie?document.cookie.split("; "):[],n={},o=0;o<r.length;o++){var c=r[o].split("="),i=c.slice(1).join("=");try{var a=decodeURIComponent(c[0]);if(n[a]=t.read(i,a),e===a)break}catch{}}return e?n[e]:n}},remove:function(e,t){o(e,"",r({},t,{expires:-1}))},withAttributes:function(t){return e(this.converter,r({},this.attributes,t))},withConverter:function(t){return e(r({},this.converter,t),this.attributes)}},{attributes:{value:Object.freeze(n)},converter:{value:Object.freeze(t)}})}({read:function(e){return'"'===e[0]&&(e=e.slice(1,-1)),e.replace(/(%[\dA-F]{2})+/gi,decodeURIComponent)},write:function(e){return encodeURIComponent(e).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g,decodeURIComponent)}},{path:"/"});const o=10/1440;(function(){if(!document.documentElement.dataset.colorScheme){let e=n.get().colorScheme;e||(e=window.matchMedia?.("(prefers-color-scheme: dark)")?.matches?"dark":"light"),document.documentElement.setAttribute("data-color-scheme",e)}})(),function(){try{n.get(e)||n.set(e,crypto.randomUUID(),{expires:365})}catch{}try{n.get(t)||n.set(t,crypto.randomUUID(),{expires:o})}catch{}}()}()</script><title>Perplexity</title><meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="canonical" href="https://www.perplexity.ai"/><meta name="description" content="Perplexity is a free AI-powered answer engine that provides accurate, trusted, and real-time answers to any question."/><meta property="og:title" content="Perplexity"/><meta property="og:description" content="Perplexity is a free AI-powered answer engine that provides accurate, trusted, and real-time answers to any question."/><meta property="og:url" content="https://www.perplexity.ai/"/><meta property="og:site_name" content="Perplexity AI"/><meta property="og:image" content="https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:site" content="@perplexity_ai"/><meta name="twitter:title" content="Perplexity"/><meta name="twitter:description" content="Perplexity is a free AI-powered answer engine that provides accurate, trusted, and real-time answers to any question."/><meta name="twitter:image" content="https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png"/><script type="module" crossorigin src="https://pplx-next-static-public.perplexity.ai/_spa/assets/index.html-CE7-yYbO.js"></script><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/vite-h6ohMMGa.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/vendors-B7pdhqMj.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/platform-core-D-I1RMie.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/i18n-CfvS4s8k.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/icons-p6-23iCP.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/aether-core-DMVD_qut.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/platform-components-B-vcS1Yy.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/react-query-DNI21iPF.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/pplx-stream-BuQ7ff2m.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/lexical-CwdPeImw.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/ask-input-DN3eb2Et.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/layout-page-BlIt8ksH.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/loss-aversion-D7N-Lf_U.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/layout-sidebar-2YbxKiDj.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/page-components-home-BLDiDy6D.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/spa-shell-C6XiwjLA.js"><link rel="modulepreload" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/bootstrap-4_jcLA83.js"><link rel="stylesheet" crossorigin href="https://pplx-next-static-public.perplexity.ai/_spa/assets/bootstrap-EIvwgEX8.css"></head><body class="md:bg-underlay bg-transparent"><main id="root"></main><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"9c53f9a6f8c49dbe","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.9.1","token":"92730c73a9e747fbb6a25e1d6657122d"}' crossorigin="anonymous"></script>
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3NIGMA 1.0 - Encrypted Messenger</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #0f1633 100%);
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 255, 65, 0.03) 3px),
+                repeating-linear-gradient(90deg, rgba(0, 255, 65, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 255, 65, 0.03) 3px);
+            background-size: 50px 50px;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .password-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.99);
+            z-index: 9999;
+        }
+
+        .password-box {
+            text-align: center;
+            border: 2px solid #00ff41;
+            padding: 40px;
+            background: rgba(15, 22, 51, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            border-radius: 5px;
+            max-width: 400px;
+        }
+
+        .password-box h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.7; }
+        }
+
+        .password-box p {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #00cc33;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            background: #0f1633;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+
+        .password-input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            border-color: #00ff41;
+        }
+
+        .btn-unlock {
+            width: 100%;
+            padding: 12px;
+            background: #00ff41;
+            border: none;
+            color: #0a0e27;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-unlock:hover {
+            background: #00cc33;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            letter-spacing: 2px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 65, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(0, 255, 65, 0.8); }
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #00cc33;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            font-size: 12px;
+            color: #00aa22;
+        }
+
+        .section {
+            background: rgba(15, 22, 51, 0.6);
+            border: 2px solid #00ff41;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+            letter-spacing: 1px;
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 10px;
+        }
+
+        .code-display {
+            background: #0a0e27;
+            border: 2px solid #00ff41;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            border-radius: 3px;
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            word-break: break-all;
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: #0a0e27;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+            border-color: #00ff41;
+        }
+
+        textarea {
+            min-height: 80px;
+            max-height: 150px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #00cc33;
+            letter-spacing: 1px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            background: #00ff41;
+            color: #0a0e27;
+            border: none;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: #00cc33;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .output {
+            background: #0a0e27;
+            border: 2px solid #00ff41;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 3px;
+            word-break: break-all;
+            min-height: 60px;
+            display: none;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+        }
+
+        .output.active {
+            display: block;
+        }
+
+        .log-entry {
+            font-size: 12px;
+            padding: 5px 0;
+            color: #00aa22;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #00aa22;
+            border-top: 1px solid #00ff41;
+            padding-top: 20px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0e27;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc33;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error {
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .success {
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div id="passwordScreen" class="password-screen">
+        <div class="password-box">
+            <h1>3NIGMA 1.0</h1>
+            <p>ENTER PASSWORD TO UNLOCK</p>
+            <input type="password" id="passwordInput" placeholder="Password" class="password-input">
+            <button class="btn-unlock" onclick="checkPassword()">UNLOCK</button>
+        </div>
+    </div>
+
+    <div id="mainContent" class="hidden">
+        <div class="container">
+            <header>
+                <h1>3NIGMA 1.0</h1>
+                <div class="subtitle">> Encrypted Messenger System</div>
+                <div class="status">✓ Anti-Piracy Protected | ✓ AES-256-GCM | ✓ P2P Encrypted</div>
+            </header>
+
+            <!-- Code Section -->
+            <div class="section">
+                <h2>> YOUR SUBSCRIBER CODE</h2>
+                <div class="code-display" id="userCode">LOADING...</div>
+                <button onclick="generateCode()" style="width: 100%; margin-top: 10px;">🔄 GENERATE NEW CODE</button>
+            </div>
+
+            <!-- Send Message Section -->
+            <div class="section">
+                <h2>> SEND MESSAGE</h2>
+                <label for="recipientCode">Recipient Code (12 digits)</label>
+                <input type="text" id="recipientCode" placeholder="000000000000" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                
+                <label for="messageToSend">Message</label>
+                <textarea id="messageToSend" placeholder="Type your secret message here..."></textarea>
+                
+                <div class="button-group">
+                    <button onclick="encryptMessage()">🔒 ENCRYPT</button>
+                    <button onclick="clearSendForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
+                </div>
+
+                <div id="encryptedOutput" class="output"></div>
+                <button id="copyBtn" onclick="copyToClipboard()" style="width: 100%; display: none; margin-top: 10px;">📋 COPY TO CLIPBOARD</button>
+            </div>
+
+            <!-- Decrypt Message Section -->
+            <div class="section">
+                <h2>> DECRYPT MESSAGE</h2>
+                <label for="senderCode">Sender Code (12 digits)</label>
+                <input type="text" id="senderCode" placeholder="000000000000" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                
+                <label for="messageToDecrypt">Encrypted Message</label>
+                <textarea id="messageToDecrypt" placeholder="Paste encrypted message here..."></textarea>
+                
+                <div class="button-group">
+                    <button onclick="decryptMessage()">🔓 DECRYPT</button>
+                    <button onclick="clearDecryptForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
+                </div>
+
+                <div id="decryptedOutput" class="output"></div>
+            </div>
+
+            <!-- Event Log -->
+            <div class="section">
+                <h2>> EVENT LOG</h2>
+                <div id="eventLog" style="min-height: 80px; max-height: 150px; overflow-y: auto;">
+                    <div class="log-entry">[00:00:00] > System initialized</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                Version 1.0 | Encrypted with AES-256-GCM | © 2026 3NIGMA | Secure Messenger
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = 'SecureMessenger2024';
+        const ALLOWED_DOMAINS = ['citer529212.github.io', 'localhost', '127.0.0.1'];
+        let userSubscriberCode = '';
+
+        function verifyDomain() {
+            const hostname = window.location.hostname;
+            const isAllowed = ALLOWED_DOMAINS.some(domain => hostname.includes(domain));
+            if (!isAllowed) {
+                document.body.innerHTML = '<h1 style="color: #ff4444; margin-top: 100px;">UNAUTHORIZED COPY</h1>';
+                return false;
+            }
+            return true;
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === CORRECT_PASSWORD) {
+                document.getElementById('passwordScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                generateCode();
+                addLog('[ACCESS GRANTED] > Password verified');
+            } else {
+                alert('❌ Wrong password!');
+                addLog('[ACCESS DENIED] > Invalid password attempt');
+            }
+        }
+
+        function generateCode() {
+            userSubscriberCode = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+            document.getElementById('userCode').textContent = userSubscriberCode;
+            addLog(`[CODE GENERATED] > ${userSubscriberCode}`);
+        }
+
+        function addLog(message) {
+            const logDiv = document.getElementById('eventLog');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${time}] ${message}`;
+            logDiv.insertBefore(entry, logDiv.firstChild);
+            if (logDiv.children.length > 20) logDiv.removeChild(logDiv.lastChild);
+        }
+
+        async function encryptMessage() {
+            const recipientCode = document.getElementById('recipientCode').value;
+            const message = document.getElementById('messageToSend').value;
+
+            if (recipientCode.length !== 12 || !/^\d+$/.test(recipientCode)) {
+                addLog('[ERROR] > Invalid recipient code');
+                return;
+            }
+
+            if (!message) {
+                addLog('[ERROR] > Message is empty');
+                return;
+            }
+
+            try {
+                const combinedCode = userSubscriberCode + recipientCode;
+                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(combinedCode));
+                const key = await crypto.subtle.importKey('raw', hashBuffer, { name: 'AES-GCM' }, false, ['encrypt']);
+
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(message));
+
+                const combined = new Uint8Array([...iv, ...new Uint8Array(encrypted)]);
+                const base64 = btoa(String.fromCharCode(...combined));
+
+                const output = document.getElementById('encryptedOutput');
+                output.innerHTML = `<div class="success">✓ Message encrypted successfully</div><div style="margin-top: 10px; word-break: break-all;">${base64}</div>`;
+                output.classList.add('active');
+                document.getElementById('copyBtn').style.display = 'block';
+
+                addLog('[ENCRYPTION SUCCESS] > AES-256-GCM');
+            } catch (error) {
+                addLog(`[ERROR] > ${error.message}`);
+            }
+        }
+
+        async function decryptMessage() {
+            const senderCode = document.getElementById('senderCode').value;
+            const encryptedMessage = document.getElementById('messageToDecrypt').value;
+
+            if (senderCode.length !== 12 || !/^\d+$/.test(senderCode)) {
+                addLog('[ERROR] > Invalid sender code');
+                return;
+            }
+
+            if (!encryptedMessage) {
+                addLog('[ERROR] > Encrypted message is empty');
+                return;
+            }
+
+            try {
+                const combinedCode = senderCode + userSubscriberCode;
+                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(combinedCode));
+                const key = await crypto.subtle.importKey('raw', hashBuffer, { name: 'AES-GCM' }, false, ['decrypt']);
+
+                const binaryString = atob(encryptedMessage);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+
+                const iv = bytes.slice(0, 12);
+                const ciphertext = bytes.slice(12);
+
+                const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+                const message = new TextDecoder().decode(decrypted);
+
+                const output = document.getElementById('decryptedOutput');
+                output.innerHTML = `<div class="success">✓ Message decrypted successfully</div><div style="margin-top: 10px;">${message}</div>`;
+                output.classList.add('active');
+
+                addLog('[DECRYPTION SUCCESS] > AES-256-GCM');
+            } catch (error) {
+                addLog('[DECRYPTION FAILED] > Invalid key or corrupted data');
+            }
+        }
+
+        function copyToClipboard() {
+            const encryptedText = document.getElementById('encryptedOutput').textContent.replace('✓ Message encrypted successfully', '').trim();
+            navigator.clipboard.writeText(encryptedText).then(() => {
+                addLog('[SUCCESS] > Message copied to clipboard');
+                alert('✓ Copied to clipboard!');
+            });
+        }
+
+        function clearSendForm() {
+            document.getElementById('recipientCode').value = '';
+            document.getElementById('messageToSend').value = '';
+            document.getElementById('encryptedOutput').classList.remove('active');
+            document.getElementById('copyBtn').style.display = 'none';
+        }
+
+        function clearDecryptForm() {
+            document.getElementById('senderCode').value = '';
+            document.getElementById('messageToDecrypt').value = '';
+            document.getElementById('decryptedOutput').classList.remove('active');
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        window.addEventListener('load', () => {
+            if (!verifyDomain()) return;
+            addLog('[SYSTEM BOOT] > 3NIGMA 1.0 initialized');
+            addLog('[CRYPTO] > WebCrypto API ready');
+        });
+    </script>
+</body>
+</html>
