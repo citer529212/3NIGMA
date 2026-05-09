@@ -162,6 +162,22 @@
             color: #9eeaff;
         }
 
+        .advanced-toggle {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #9eeaff;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .advanced-toggle summary {
+            list-style: none;
+        }
+
+        .advanced-toggle summary::-webkit-details-marker {
+            display: none;
+        }
+
         .section {
             background: linear-gradient(165deg, rgba(21, 53, 124, 0.86) 0%, rgba(8, 26, 76, 0.86) 55%, rgba(4, 14, 48, 0.9) 100%);
             border: 2px solid #00ff41;
@@ -490,13 +506,16 @@
                     </div>
 
                     <div class="section">
-                        <h2>> BACKEND</h2>
-                        <label for="backendUrl">Backend URL</label>
-                        <input type="text" id="backendUrl" placeholder="https://your-backend.onrender.com">
+                        <h2>> CONNECTION</h2>
                         <div class="button-group">
-                            <button onclick="connectBackend()">🛰️ CONNECT</button>
+                            <button onclick="connectBackend()">🛰️ RECONNECT</button>
                             <button onclick="syncInbox()" style="background: #00c3ff;">📡 SYNC</button>
                         </div>
+                        <details class="advanced-toggle">
+                            <summary>▸ Advanced backend settings</summary>
+                            <label for="backendUrl" style="margin-top: 10px;">Backend URL</label>
+                            <input type="text" id="backendUrl" placeholder="https://your-backend.onrender.com">
+                        </details>
                     </div>
 
                     <div class="section">
@@ -563,7 +582,8 @@
         const MAX_FAILED_ATTEMPTS = 5;
         const SUBSCRIBER_CODE_KEY = '3nigma_subscriber_code';
         const BACKEND_URL_STORAGE_KEY = '3nigma_backend_url';
-        const DEFAULT_BACKEND_URL = window.location.protocol === 'file:' ? 'http://127.0.0.1:8787' : '';
+        const PROD_BACKEND_URL = 'https://threenigma-x8dp.onrender.com';
+        const DEFAULT_BACKEND_URL = window.location.protocol === 'file:' ? 'http://127.0.0.1:8787' : PROD_BACKEND_URL;
         const POLL_INTERVAL_MS = 2000;
         const IDENTITY_PRIVATE_KEY_PREFIX = '3nigma_identity_private_';
         const IDENTITY_PUBLIC_KEY_PREFIX = '3nigma_identity_public_';
@@ -608,9 +628,11 @@
 
         function getBackendUrl() {
             const input = document.getElementById('backendUrl');
-            if (!input) return DEFAULT_BACKEND_URL;
-            const url = input.value.trim().replace(/\/+$/, '');
-            return url || DEFAULT_BACKEND_URL;
+            const fromInput = input ? input.value.trim().replace(/\/+$/, '') : '';
+            const fromQuery = new URLSearchParams(window.location.search).get('backend');
+            const fromStorage = localStorage.getItem(BACKEND_URL_STORAGE_KEY) || '';
+            const candidate = fromInput || fromQuery || fromStorage || DEFAULT_BACKEND_URL;
+            return String(candidate).trim().replace(/\/+$/, '');
         }
 
         function rememberBackendUrl(url) {
@@ -814,14 +836,8 @@
                 setNotice('passwordNotice', '');
                 generateCode(false);
                 addLog('[ACCESS GRANTED] > Password verified');
-                const existingUrl = getBackendUrl();
-                if (existingUrl) {
-                    document.getElementById('backendUrl').value = existingUrl;
-                    await connectBackend();
-                } else {
-                    setBackendStatus('⚠ Enter Backend URL and press CONNECT', false);
-                    setNotice('appNotice', 'Set backend URL to start messaging.', 'error');
-                }
+                document.getElementById('backendUrl').value = getBackendUrl();
+                await connectBackend();
             } else {
                 failedAttempts += 1;
                 if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
@@ -1106,9 +1122,8 @@
         window.addEventListener('load', () => {
             if (!verifyDomain()) return;
             const backendInput = document.getElementById('backendUrl');
-            const rememberedBackendUrl = localStorage.getItem(BACKEND_URL_STORAGE_KEY) || '';
             if (backendInput && !backendInput.value.trim()) {
-                backendInput.value = rememberedBackendUrl || DEFAULT_BACKEND_URL;
+                backendInput.value = getBackendUrl();
             }
             document.getElementById('recipientCode').addEventListener('input', triggerRecipientKeyCheck);
             recipientKeyIsAvailable = false;
