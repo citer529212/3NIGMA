@@ -183,6 +183,36 @@ async function handleSendMessage(req, res) {
   });
 }
 
+async function handleClearMessages(req, res) {
+  let payload;
+  try {
+    payload = await collectJsonBody(req);
+  } catch (error) {
+    return sendJson(res, 400, { ok: false, error: error.message });
+  }
+
+  const subscriberCode = String(payload.subscriberCode || '');
+  if (!isValidCode(subscriberCode)) {
+    return sendJson(res, 400, { ok: false, error: 'subscriberCode must be 12 digits' });
+  }
+
+  const before = encryptedStore.length;
+  for (let i = encryptedStore.length - 1; i >= 0; i -= 1) {
+    const msg = encryptedStore[i];
+    if (msg.senderCode === subscriberCode || msg.recipientCode === subscriberCode) {
+      encryptedStore.splice(i, 1);
+    }
+  }
+
+  const cleared = before - encryptedStore.length;
+  return sendJson(res, 200, {
+    ok: true,
+    subscriberCode,
+    cleared,
+    remaining: encryptedStore.length,
+  });
+}
+
 function handleInbox(reqUrl, res) {
   const recipientCode = String(reqUrl.searchParams.get('recipientCode') || '');
   const afterId = Number(reqUrl.searchParams.get('afterId') || 0);
@@ -261,6 +291,10 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'POST' && reqUrl.pathname === '/api/messages/send') {
     return handleSendMessage(req, res);
+  }
+
+  if (req.method === 'POST' && reqUrl.pathname === '/api/messages/clear') {
+    return handleClearMessages(req, res);
   }
 
   if (req.method === 'GET' && reqUrl.pathname === '/api/messages/inbox') {

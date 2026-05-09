@@ -631,6 +631,29 @@
             localStorage.setItem(BACKEND_URL_STORAGE_KEY, url);
         }
 
+        function clearServerSessionHistory() {
+            if (!backendBaseUrl || !/^\d{12}$/.test(userSubscriberCode)) return;
+            const payload = JSON.stringify({ subscriberCode: userSubscriberCode });
+            const endpoint = `${backendBaseUrl}/api/messages/clear`;
+
+            try {
+                if (navigator.sendBeacon) {
+                    const blob = new Blob([payload], { type: 'application/json' });
+                    navigator.sendBeacon(endpoint, blob);
+                    return;
+                }
+            } catch (_) {
+                // Fallback fetch below.
+            }
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+                keepalive: true,
+            }).catch(() => {});
+        }
+
         function bytesToBase64(bytes) {
             let binary = '';
             for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
@@ -1107,6 +1130,7 @@
         });
 
         window.addEventListener('beforeunload', () => {
+            clearServerSessionHistory();
             if (inboxPollTimer) clearInterval(inboxPollTimer);
         });
 
