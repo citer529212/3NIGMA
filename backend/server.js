@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { URL } = require('node:url');
 
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || '0.0.0.0';
 const PORT = Number(process.env.PORT || 8787);
 const MAX_BODY_BYTES = 1024 * 1024;
 const MESSAGE_TTL_MS = 24 * 60 * 60 * 1000;

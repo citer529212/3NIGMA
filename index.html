@@ -493,7 +493,7 @@
                     <div class="section">
                         <h2>> BACKEND</h2>
                         <label for="backendUrl">Backend URL</label>
-                        <input type="text" id="backendUrl" value="http://127.0.0.1:8787">
+                        <input type="text" id="backendUrl" placeholder="https://your-backend.onrender.com">
                         <div class="button-group">
                             <button onclick="connectBackend()">🛰️ CONNECT</button>
                             <button onclick="syncInbox()" style="background: #00c3ff;">📡 SYNC</button>
@@ -563,7 +563,8 @@
         const LOCKOUT_MS = 15000;
         const MAX_FAILED_ATTEMPTS = 5;
         const SUBSCRIBER_CODE_KEY = '3nigma_subscriber_code';
-        const DEFAULT_BACKEND_URL = 'http://127.0.0.1:8787';
+        const BACKEND_URL_STORAGE_KEY = '3nigma_backend_url';
+        const DEFAULT_BACKEND_URL = window.location.protocol === 'file:' ? 'http://127.0.0.1:8787' : '';
         const POLL_INTERVAL_MS = 2000;
         const IDENTITY_PRIVATE_KEY_PREFIX = '3nigma_identity_private_';
         const IDENTITY_PUBLIC_KEY_PREFIX = '3nigma_identity_public_';
@@ -611,6 +612,11 @@
             if (!input) return DEFAULT_BACKEND_URL;
             const url = input.value.trim().replace(/\/+$/, '');
             return url || DEFAULT_BACKEND_URL;
+        }
+
+        function rememberBackendUrl(url) {
+            if (!url) return;
+            localStorage.setItem(BACKEND_URL_STORAGE_KEY, url);
         }
 
         function bytesToBase64(bytes) {
@@ -809,8 +815,14 @@
                 setNotice('passwordNotice', '');
                 generateCode(false);
                 addLog('[ACCESS GRANTED] > Password verified');
-                document.getElementById('backendUrl').value = getBackendUrl();
-                await connectBackend();
+                const existingUrl = getBackendUrl();
+                if (existingUrl) {
+                    document.getElementById('backendUrl').value = existingUrl;
+                    await connectBackend();
+                } else {
+                    setBackendStatus('⚠ Enter Backend URL and press CONNECT', false);
+                    setNotice('appNotice', 'Set backend URL to start messaging.', 'error');
+                }
             } else {
                 failedAttempts += 1;
                 if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
@@ -885,9 +897,18 @@
 
         async function connectBackend() {
             backendBaseUrl = getBackendUrl();
+            if (!backendBaseUrl) {
+                backendConnected = false;
+                setBackendStatus('⚠ Backend URL is empty', false);
+                recipientKeyIsAvailable = false;
+                setRecipientKeyStatus('Enter backend URL first, then press CONNECT.', 'error');
+                setNotice('appNotice', 'Backend URL is required.', 'error');
+                return false;
+            }
             try {
                 const health = await apiFetch('/api/health', { method: 'GET' });
                 backendConnected = true;
+                rememberBackendUrl(backendBaseUrl);
                 setBackendStatus(`✓ Backend connected: ${backendBaseUrl}`, true);
                 addLog(`[BACKEND] > Connected (${health.privacyMode})`);
                 await publishIdentityKey();
@@ -1086,8 +1107,9 @@
         window.addEventListener('load', () => {
             if (!verifyDomain()) return;
             const backendInput = document.getElementById('backendUrl');
+            const rememberedBackendUrl = localStorage.getItem(BACKEND_URL_STORAGE_KEY) || '';
             if (backendInput && !backendInput.value.trim()) {
-                backendInput.value = DEFAULT_BACKEND_URL;
+                backendInput.value = rememberedBackendUrl || DEFAULT_BACKEND_URL;
             }
             document.getElementById('recipientCode').addEventListener('input', triggerRecipientKeyCheck);
             recipientKeyIsAvailable = false;
