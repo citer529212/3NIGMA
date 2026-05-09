@@ -12,11 +12,11 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0e27 0%, #0f1633 100%);
-            background-image: 
+            background: radial-gradient(circle at 10% 15%, rgba(18, 58, 145, 0.98) 0%, rgba(10, 34, 95, 0.98) 30%, rgba(7, 22, 63, 0.99) 55%, rgba(3, 10, 29, 1) 100%);
+            background-image:
                 repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 255, 65, 0.03) 3px),
                 repeating-linear-gradient(90deg, rgba(0, 255, 65, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 255, 65, 0.03) 3px);
-            background-size: 50px 50px;
+            background-size: 44px 44px, 44px 44px;
             color: #00ff41;
             font-family: 'Courier New', monospace;
             min-height: 100vh;
@@ -34,7 +34,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 14, 39, 0.99);
+            background: radial-gradient(circle at 10% 15%, rgba(18, 58, 145, 0.98) 0%, rgba(10, 34, 95, 0.98) 30%, rgba(7, 22, 63, 0.99) 55%, rgba(3, 10, 29, 1) 100%);
             z-index: 9999;
         }
 
@@ -104,8 +104,22 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .messenger-shell {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .sidebar-column,
+        .chat-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
         header {
@@ -141,6 +155,12 @@
         .status {
             font-size: 12px;
             color: #00aa22;
+            margin-bottom: 6px;
+        }
+
+        .backend-status {
+            font-size: 12px;
+            color: #9eeaff;
         }
 
         .section {
@@ -269,6 +289,84 @@
             display: block;
         }
 
+        .chat-stream {
+            min-height: 340px;
+            max-height: 440px;
+            overflow-y: auto;
+            border: 2px solid #00ff41;
+            border-radius: 3px;
+            background: rgba(4, 11, 31, 0.9);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-empty {
+            color: #6ef291;
+            opacity: 0.8;
+            font-size: 13px;
+            padding: 6px;
+        }
+
+        .chat-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .chat-row.outgoing {
+            justify-content: flex-end;
+        }
+
+        .chat-row.incoming {
+            justify-content: flex-start;
+        }
+
+        .chat-bubble {
+            max-width: 78%;
+            border: 1px solid #00ff41;
+            padding: 10px 12px;
+            border-radius: 8px;
+            line-height: 1.4;
+            word-break: break-word;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.15);
+        }
+
+        .chat-row.outgoing .chat-bubble {
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.22), rgba(0, 255, 65, 0.08));
+        }
+
+        .chat-row.incoming .chat-bubble {
+            background: linear-gradient(135deg, rgba(0, 195, 255, 0.18), rgba(0, 195, 255, 0.06));
+            border-color: #00c3ff;
+            color: #9eeaff;
+        }
+
+        .chat-meta {
+            font-size: 11px;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        .chat-text {
+            font-size: 14px;
+        }
+
+        .recipient-key-status {
+            margin: -4px 0 10px;
+            font-size: 12px;
+            min-height: 16px;
+            color: #9eeaff;
+        }
+
+        .recipient-key-status.ok {
+            color: #70ff9e;
+        }
+
+        .recipient-key-status.error {
+            color: #ff8f8f;
+        }
+
         .log-entry {
             font-size: 12px;
             padding: 5px 0;
@@ -315,6 +413,52 @@
             color: #00ff41;
             text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
         }
+
+        .notice {
+            margin-top: 12px;
+            font-size: 12px;
+            min-height: 16px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            header {
+                margin-bottom: 24px;
+            }
+
+            h1 {
+                font-size: 28px;
+                letter-spacing: 1px;
+            }
+
+            .section {
+                padding: 14px;
+                margin-bottom: 14px;
+            }
+
+            .code-display {
+                font-size: 21px;
+                letter-spacing: 2px;
+                padding: 14px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .messenger-shell {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .chat-stream {
+                min-height: 260px;
+                max-height: 320px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -324,6 +468,7 @@
             <p>ENTER PASSWORD TO UNLOCK</p>
             <input type="password" id="passwordInput" placeholder="Password" class="password-input">
             <button class="btn-unlock" onclick="checkPassword()">UNLOCK</button>
+            <div id="passwordNotice" class="notice"></div>
         </div>
     </div>
 
@@ -333,56 +478,77 @@
                 <h1>3NIGMA 1.0</h1>
                 <div class="subtitle">> Encrypted Messenger System</div>
                 <div class="status">✓ Anti-Piracy Protected | ✓ AES-256-GCM | ✓ P2P Encrypted</div>
+                <div id="backendStatus" class="backend-status">⏳ Backend: disconnected</div>
             </header>
+            <div id="appNotice" class="notice"></div>
 
-            <!-- Code Section -->
-            <div class="section">
-                <h2>> YOUR SUBSCRIBER CODE</h2>
-                <div class="code-display" id="userCode">LOADING...</div>
-                <button onclick="generateCode()" style="width: 100%; margin-top: 10px;">🔄 GENERATE NEW CODE</button>
-            </div>
+            <div class="messenger-shell">
+                <aside class="sidebar-column">
+                    <div class="section">
+                        <h2>> YOUR SUBSCRIBER CODE</h2>
+                        <div class="code-display" id="userCode">LOADING...</div>
+                        <button onclick="generateCode()" style="width: 100%; margin-top: 10px;">🔄 GENERATE NEW CODE</button>
+                    </div>
 
-            <!-- Send Message Section -->
-            <div class="section">
-                <h2>> SEND MESSAGE</h2>
-                <label for="recipientCode">Recipient Code (12 digits)</label>
-                <input type="text" id="recipientCode" placeholder="000000000000" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                
-                <label for="messageToSend">Message</label>
-                <textarea id="messageToSend" placeholder="Type your secret message here..."></textarea>
-                
-                <div class="button-group">
-                    <button onclick="encryptMessage()">🔒 ENCRYPT</button>
-                    <button onclick="clearSendForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
-                </div>
+                    <div class="section">
+                        <h2>> BACKEND</h2>
+                        <label for="backendUrl">Backend URL</label>
+                        <input type="text" id="backendUrl" value="http://127.0.0.1:8787">
+                        <div class="button-group">
+                            <button onclick="connectBackend()">🛰️ CONNECT</button>
+                            <button onclick="syncInbox()" style="background: #00c3ff;">📡 SYNC</button>
+                        </div>
+                    </div>
 
-                <div id="encryptedOutput" class="output"></div>
-                <button id="copyBtn" onclick="copyToClipboard()" style="width: 100%; display: none; margin-top: 10px;">📋 COPY TO CLIPBOARD</button>
-            </div>
+                    <div class="section">
+                        <h2>> EVENT LOG</h2>
+                        <div id="eventLog" style="min-height: 80px; max-height: 250px; overflow-y: auto;">
+                            <div class="log-entry">[00:00:00] > System initialized</div>
+                        </div>
+                    </div>
+                </aside>
 
-            <!-- Decrypt Message Section -->
-            <div class="section">
-                <h2>> DECRYPT MESSAGE</h2>
-                <label for="senderCode">Sender Code (12 digits)</label>
-                <input type="text" id="senderCode" placeholder="000000000000" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                
-                <label for="messageToDecrypt">Encrypted Message</label>
-                <textarea id="messageToDecrypt" placeholder="Paste encrypted message here..."></textarea>
-                
-                <div class="button-group">
-                    <button onclick="decryptMessage()">🔓 DECRYPT</button>
-                    <button onclick="clearDecryptForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
-                </div>
+                <main class="chat-column">
+                    <div class="section">
+                        <h2>> SECURE CHAT STREAM</h2>
+                        <div id="chatStream" class="chat-stream">
+                            <div id="chatEmpty" class="chat-empty">No decrypted/sent messages yet. Start secure conversation.</div>
+                        </div>
+                    </div>
 
-                <div id="decryptedOutput" class="output"></div>
-            </div>
+                    <div class="section">
+                        <h2>> SEND MESSAGE</h2>
+                        <label for="recipientCode">Recipient Code (12 digits)</label>
+                        <input type="text" id="recipientCode" placeholder="000000000000" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div id="recipientKeyStatus" class="recipient-key-status">Enter recipient code to check E2EE key...</div>
+                        
+                        <label for="messageToSend">Message</label>
+                        <textarea id="messageToSend" placeholder="Type your secret message here..."></textarea>
+                        
+                        <div class="button-group">
+                            <button id="sendBtn" onclick="encryptMessage()">📨 SEND</button>
+                            <button onclick="clearSendForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
+                        </div>
 
-            <!-- Event Log -->
-            <div class="section">
-                <h2>> EVENT LOG</h2>
-                <div id="eventLog" style="min-height: 80px; max-height: 150px; overflow-y: auto;">
-                    <div class="log-entry">[00:00:00] > System initialized</div>
-                </div>
+                        <div id="encryptedOutput" class="output"></div>
+                    </div>
+
+                    <div class="section">
+                        <h2>> INBOX CONTROL</h2>
+                        <label for="senderCode">Current Subscriber Code</label>
+                        <input type="text" id="senderCode" placeholder="Auto from your profile" readonly>
+                        
+                        <label for="messageToDecrypt">Backend Notes</label>
+                        <textarea id="messageToDecrypt" placeholder="Incoming messages will appear in SECURE CHAT STREAM" readonly></textarea>
+                        
+                        <div class="button-group">
+                            <button onclick="decryptMessage()">📥 SYNC INBOX</button>
+                            <button onclick="clearDecryptForm()" style="background: #ff6b6b;">🗑️ CLEAR</button>
+                        </div>
+
+                        <div id="decryptedOutput" class="output"></div>
+                    </div>
+                </main>
             </div>
 
             <div class="footer">
@@ -392,13 +558,93 @@
     </div>
 
     <script>
-        const CORRECT_PASSWORD = 'SecureMessenger2024';
+        const PASSWORD_HASH = '74a8c042ac7ad06ae636c48bc00930a86042079ae3711abed1bdf8d9164fcb79';
         const ALLOWED_DOMAINS = ['citer529212.github.io', 'localhost', '127.0.0.1'];
+        const LOCKOUT_MS = 15000;
+        const MAX_FAILED_ATTEMPTS = 5;
+        const SUBSCRIBER_CODE_KEY = '3nigma_subscriber_code';
+        const DEFAULT_BACKEND_URL = 'http://127.0.0.1:8787';
+        const POLL_INTERVAL_MS = 2000;
+        const IDENTITY_PRIVATE_KEY_PREFIX = '3nigma_identity_private_';
+        const IDENTITY_PUBLIC_KEY_PREFIX = '3nigma_identity_public_';
+
         let userSubscriberCode = '';
+        let failedAttempts = 0;
+        let lockedUntil = 0;
+        let backendBaseUrl = '';
+        let backendConnected = false;
+        let lastInboxId = 0;
+        let inboxPollTimer = null;
+        let identityPrivateKey = null;
+        let identityPublicKeyB64 = '';
+        let recipientCheckTimer = null;
+        let recipientCheckSeq = 0;
+        let recipientKeyIsAvailable = false;
+
+        function setNotice(targetId, message, type = '') {
+            const el = document.getElementById(targetId);
+            if (!el) return;
+            el.textContent = message;
+            el.className = `notice ${type}`.trim();
+        }
+
+        function setBackendStatus(message, isOk = false) {
+            const el = document.getElementById('backendStatus');
+            if (!el) return;
+            el.textContent = message;
+            el.style.color = isOk ? '#70ff9e' : '#9eeaff';
+        }
+
+        function setRecipientKeyStatus(message, type = '') {
+            const status = document.getElementById('recipientKeyStatus');
+            const sendBtn = document.getElementById('sendBtn');
+            if (!status || !sendBtn) return;
+            status.textContent = message;
+            status.className = `recipient-key-status ${type}`.trim();
+            sendBtn.disabled = !recipientKeyIsAvailable;
+            sendBtn.style.opacity = recipientKeyIsAvailable ? '1' : '0.6';
+            sendBtn.style.cursor = recipientKeyIsAvailable ? 'pointer' : 'not-allowed';
+        }
+
+        function getBackendUrl() {
+            const input = document.getElementById('backendUrl');
+            if (!input) return DEFAULT_BACKEND_URL;
+            const url = input.value.trim().replace(/\/+$/, '');
+            return url || DEFAULT_BACKEND_URL;
+        }
+
+        function bytesToBase64(bytes) {
+            let binary = '';
+            for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+            return btoa(binary);
+        }
+
+        function base64ToBytes(base64) {
+            const binary = atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            return bytes;
+        }
+
+        async function sha256Hex(text) {
+            const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return Array.from(new Uint8Array(buffer))
+                .map((x) => x.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        async function sha256Bytes(bytes) {
+            const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
+            return new Uint8Array(hashBuffer);
+        }
 
         function verifyDomain() {
             const hostname = window.location.hostname;
-            const isAllowed = ALLOWED_DOMAINS.some(domain => hostname.includes(domain));
+            const protocol = window.location.protocol;
+            if (protocol === 'file:') return true;
+            const isAllowed = ALLOWED_DOMAINS.some((domain) => (
+                hostname === domain || hostname.endsWith(`.${domain}`)
+            ));
             if (!isAllowed) {
                 document.body.innerHTML = '<h1 style="color: #ff4444; margin-top: 100px;">UNAUTHORIZED COPY</h1>';
                 return false;
@@ -406,23 +652,192 @@
             return true;
         }
 
-        function checkPassword() {
+        async function apiFetch(path, options = {}) {
+            if (!backendBaseUrl) throw new Error('Backend URL is not set');
+            const response = await fetch(`${backendBaseUrl}${path}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {}),
+                },
+                ...options,
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || data.ok === false) {
+                throw new Error(data.error || `HTTP ${response.status}`);
+            }
+            return data;
+        }
+
+        async function importPrivateKeyFromB64(pkcs8B64) {
+            const pkcs8 = base64ToBytes(pkcs8B64);
+            return crypto.subtle.importKey(
+                'pkcs8',
+                pkcs8.buffer,
+                { name: 'ECDH', namedCurve: 'P-256' },
+                true,
+                ['deriveBits'],
+            );
+        }
+
+        async function importPublicKeyFromB64(spkiB64) {
+            const spki = base64ToBytes(spkiB64);
+            return crypto.subtle.importKey(
+                'spki',
+                spki.buffer,
+                { name: 'ECDH', namedCurve: 'P-256' },
+                true,
+                [],
+            );
+        }
+
+        async function exportPublicKeyB64(publicKey) {
+            const spki = await crypto.subtle.exportKey('spki', publicKey);
+            return bytesToBase64(new Uint8Array(spki));
+        }
+
+        async function exportPrivateKeyB64(privateKey) {
+            const pkcs8 = await crypto.subtle.exportKey('pkcs8', privateKey);
+            return bytesToBase64(new Uint8Array(pkcs8));
+        }
+
+        async function ensureIdentityForCurrentCode() {
+            if (!/^\d{12}$/.test(userSubscriberCode)) {
+                throw new Error('Subscriber code is not initialized');
+            }
+
+            const privateStorageKey = `${IDENTITY_PRIVATE_KEY_PREFIX}${userSubscriberCode}`;
+            const publicStorageKey = `${IDENTITY_PUBLIC_KEY_PREFIX}${userSubscriberCode}`;
+            const storedPrivate = localStorage.getItem(privateStorageKey);
+            const storedPublic = localStorage.getItem(publicStorageKey);
+
+            if (storedPrivate && storedPublic) {
+                identityPrivateKey = await importPrivateKeyFromB64(storedPrivate);
+                identityPublicKeyB64 = storedPublic;
+                return;
+            }
+
+            const keyPair = await crypto.subtle.generateKey(
+                { name: 'ECDH', namedCurve: 'P-256' },
+                true,
+                ['deriveBits'],
+            );
+
+            identityPrivateKey = keyPair.privateKey;
+            identityPublicKeyB64 = await exportPublicKeyB64(keyPair.publicKey);
+            const privateB64 = await exportPrivateKeyB64(keyPair.privateKey);
+
+            localStorage.setItem(privateStorageKey, privateB64);
+            localStorage.setItem(publicStorageKey, identityPublicKeyB64);
+            addLog('[E2EE] > New identity keypair generated');
+        }
+
+        async function publishIdentityKey() {
+            await ensureIdentityForCurrentCode();
+            await apiFetch('/api/keys/publish', {
+                method: 'POST',
+                body: JSON.stringify({
+                    subscriberCode: userSubscriberCode,
+                    publicKey: identityPublicKeyB64,
+                }),
+            });
+            addLog('[E2EE] > Public key published to key registry');
+        }
+
+        async function buildSharedAesKey(privateKey, peerPublicKeyB64) {
+            const peerPublicKey = await importPublicKeyFromB64(peerPublicKeyB64);
+            const sharedBitsBuffer = await crypto.subtle.deriveBits(
+                { name: 'ECDH', public: peerPublicKey },
+                privateKey,
+                256,
+            );
+            const keyBytes = await sha256Bytes(sharedBitsBuffer);
+            return crypto.subtle.importKey('raw', keyBytes, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+        }
+
+        async function encryptForRecipient(message, recipientPublicKeyB64) {
+            const ephemeral = await crypto.subtle.generateKey(
+                { name: 'ECDH', namedCurve: 'P-256' },
+                true,
+                ['deriveBits'],
+            );
+
+            const aesKey = await buildSharedAesKey(ephemeral.privateKey, recipientPublicKeyB64);
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const plaintext = new TextEncoder().encode(message);
+            const cipherBuffer = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, aesKey, plaintext);
+            const senderEphemeralPubKey = await exportPublicKeyB64(ephemeral.publicKey);
+
+            return {
+                version: '1',
+                alg: 'ECDH-P256/AES-256-GCM',
+                senderEphemeralPubKey,
+                iv: bytesToBase64(iv),
+                ciphertext: bytesToBase64(new Uint8Array(cipherBuffer)),
+            };
+        }
+
+        async function decryptEnvelope(envelope) {
+            if (!identityPrivateKey) {
+                await ensureIdentityForCurrentCode();
+            }
+
+            const aesKey = await buildSharedAesKey(identityPrivateKey, envelope.senderEphemeralPubKey);
+            const iv = base64ToBytes(envelope.iv);
+            const ciphertext = base64ToBytes(envelope.ciphertext);
+            const plainBuffer = await crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv },
+                aesKey,
+                ciphertext,
+            );
+            return new TextDecoder().decode(plainBuffer);
+        }
+
+        async function checkPassword() {
+            const now = Date.now();
+            if (now < lockedUntil) {
+                const left = Math.ceil((lockedUntil - now) / 1000);
+                setNotice('passwordNotice', `LOCKED. TRY AGAIN IN ${left}S`, 'error');
+                return;
+            }
+
             const input = document.getElementById('passwordInput').value;
-            if (input === CORRECT_PASSWORD) {
+            const inputHash = await sha256Hex(input);
+            if (inputHash === PASSWORD_HASH) {
                 document.getElementById('passwordScreen').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
-                generateCode();
+                failedAttempts = 0;
+                setNotice('passwordNotice', '');
+                generateCode(false);
                 addLog('[ACCESS GRANTED] > Password verified');
+                document.getElementById('backendUrl').value = getBackendUrl();
+                await connectBackend();
             } else {
-                alert('❌ Wrong password!');
+                failedAttempts += 1;
+                if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+                    lockedUntil = Date.now() + LOCKOUT_MS;
+                    failedAttempts = 0;
+                    setNotice('passwordNotice', `TOO MANY ATTEMPTS. LOCKED FOR ${LOCKOUT_MS / 1000}S`, 'error');
+                } else {
+                    setNotice('passwordNotice', `WRONG PASSWORD. ATTEMPT ${failedAttempts}/${MAX_FAILED_ATTEMPTS}`, 'error');
+                }
                 addLog('[ACCESS DENIED] > Invalid password attempt');
             }
         }
 
-        function generateCode() {
-            userSubscriberCode = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+        function generateCode(forceNew = true) {
+            const storedCode = localStorage.getItem(SUBSCRIBER_CODE_KEY);
+            if (!forceNew && /^\d{12}$/.test(storedCode || '')) {
+                userSubscriberCode = storedCode;
+            } else {
+                userSubscriberCode = Math.floor(Math.random() * 1000000000000).toString().padStart(12, '0');
+                localStorage.setItem(SUBSCRIBER_CODE_KEY, userSubscriberCode);
+            }
             document.getElementById('userCode').textContent = userSubscriberCode;
+            document.getElementById('senderCode').value = userSubscriberCode;
             addLog(`[CODE GENERATED] > ${userSubscriberCode}`);
+            lastInboxId = 0;
+            identityPrivateKey = null;
+            identityPublicKeyB64 = '';
         }
 
         function addLog(message) {
@@ -432,104 +847,231 @@
             entry.className = 'log-entry';
             entry.textContent = `[${time}] ${message}`;
             logDiv.insertBefore(entry, logDiv.firstChild);
-            if (logDiv.children.length > 20) logDiv.removeChild(logDiv.lastChild);
+            if (logDiv.children.length > 40) logDiv.removeChild(logDiv.lastChild);
+        }
+
+        function appendChatBubble(type, message, meta, timestampMs = Date.now()) {
+            const chatStream = document.getElementById('chatStream');
+            const empty = document.getElementById('chatEmpty');
+            if (empty) empty.remove();
+
+            const row = document.createElement('div');
+            row.className = `chat-row ${type}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble';
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'chat-meta';
+            metaDiv.textContent = `${meta} • ${new Date(timestampMs).toLocaleTimeString()}`;
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'chat-text';
+            textDiv.textContent = message;
+
+            bubble.appendChild(metaDiv);
+            bubble.appendChild(textDiv);
+            row.appendChild(bubble);
+            chatStream.appendChild(row);
+            chatStream.scrollTop = chatStream.scrollHeight;
+        }
+
+        function startInboxPolling() {
+            if (inboxPollTimer) clearInterval(inboxPollTimer);
+            inboxPollTimer = setInterval(() => {
+                syncInbox().catch(() => {});
+            }, POLL_INTERVAL_MS);
+        }
+
+        async function connectBackend() {
+            backendBaseUrl = getBackendUrl();
+            try {
+                const health = await apiFetch('/api/health', { method: 'GET' });
+                backendConnected = true;
+                setBackendStatus(`✓ Backend connected: ${backendBaseUrl}`, true);
+                addLog(`[BACKEND] > Connected (${health.privacyMode})`);
+                await publishIdentityKey();
+                startInboxPolling();
+                await syncInbox();
+                triggerRecipientKeyCheck();
+                setNotice('appNotice', 'E2EE ready: backend stores ciphertext only.', 'success');
+                return true;
+            } catch (error) {
+                backendConnected = false;
+                if (inboxPollTimer) clearInterval(inboxPollTimer);
+                setBackendStatus(`⚠ Backend offline: ${backendBaseUrl}`, false);
+                recipientKeyIsAvailable = false;
+                setRecipientKeyStatus('Backend is offline. Connect first.', 'error');
+                setNotice('appNotice', `Backend is unavailable: ${error.message}`, 'error');
+                addLog('[BACKEND] > Connection failed');
+                return false;
+            }
+        }
+
+        async function checkRecipientKey(recipientCode, seq) {
+            if (seq !== recipientCheckSeq) return null;
+
+            if (!/^\d{12}$/.test(recipientCode)) {
+                recipientKeyIsAvailable = false;
+                setRecipientKeyStatus('Recipient code must be exactly 12 digits.', 'error');
+                return null;
+            }
+
+            if (recipientCode === userSubscriberCode) {
+                recipientKeyIsAvailable = false;
+                setRecipientKeyStatus('Recipient code cannot be your own code.', 'error');
+                return null;
+            }
+
+            if (!backendConnected) {
+                recipientKeyIsAvailable = false;
+                setRecipientKeyStatus('Connect backend to validate recipient key.', 'error');
+                return null;
+            }
+
+            setRecipientKeyStatus('Checking recipient E2EE key...', '');
+            try {
+                const payload = await apiFetch(
+                    `/api/keys/get?subscriberCode=${encodeURIComponent(recipientCode)}`,
+                    { method: 'GET' },
+                );
+                if (seq !== recipientCheckSeq) return null;
+                recipientKeyIsAvailable = true;
+                setRecipientKeyStatus('Recipient key found. Ready to send securely.', 'ok');
+                return payload;
+            } catch (error) {
+                if (seq !== recipientCheckSeq) return null;
+                recipientKeyIsAvailable = false;
+                if (String(error.message).includes('public key not found')) {
+                    setRecipientKeyStatus('Recipient key not found. Ask recipient to press CONNECT.', 'error');
+                } else {
+                    setRecipientKeyStatus(`Key check failed: ${error.message}`, 'error');
+                }
+                return null;
+            }
+        }
+
+        function triggerRecipientKeyCheck() {
+            const recipientCode = document.getElementById('recipientCode').value.trim();
+            recipientCheckSeq += 1;
+            const seq = recipientCheckSeq;
+            if (recipientCheckTimer) clearTimeout(recipientCheckTimer);
+            recipientCheckTimer = setTimeout(() => {
+                checkRecipientKey(recipientCode, seq).catch(() => {});
+            }, 250);
+        }
+
+        async function syncInbox() {
+            if (!backendConnected) {
+                const connected = await connectBackend();
+                if (!connected) return;
+            }
+
+            if (!/^\d{12}$/.test(userSubscriberCode)) return;
+
+            try {
+                const payload = await apiFetch(
+                    `/api/messages/inbox?recipientCode=${encodeURIComponent(userSubscriberCode)}&afterId=${lastInboxId}`,
+                    { method: 'GET' },
+                );
+
+                for (const msg of payload.messages || []) {
+                    try {
+                        const plainText = await decryptEnvelope(msg.envelope);
+                        appendChatBubble('incoming', plainText, `from ${msg.senderCode}`, msg.createdAt);
+                    } catch {
+                        appendChatBubble('incoming', '[Cannot decrypt this message]', `from ${msg.senderCode}`, msg.createdAt);
+                    }
+                    if (msg.id > lastInboxId) lastInboxId = msg.id;
+                }
+
+                if ((payload.messages || []).length > 0) {
+                    addLog(`[INBOX] > ${payload.messages.length} new E2EE message(s)`);
+                }
+            } catch (error) {
+                backendConnected = false;
+                setBackendStatus(`⚠ Backend disconnected: ${backendBaseUrl}`, false);
+                addLog(`[INBOX] > Polling interrupted (${error.message})`);
+            }
         }
 
         async function encryptMessage() {
             const recipientCode = document.getElementById('recipientCode').value;
-            const message = document.getElementById('messageToSend').value;
+            const message = document.getElementById('messageToSend').value.trim();
 
             if (recipientCode.length !== 12 || !/^\d+$/.test(recipientCode)) {
                 addLog('[ERROR] > Invalid recipient code');
+                setNotice('appNotice', 'Invalid recipient code: use exactly 12 digits.', 'error');
                 return;
             }
 
             if (!message) {
                 addLog('[ERROR] > Message is empty');
+                setNotice('appNotice', 'Message is empty.', 'error');
                 return;
             }
 
+            if (!backendConnected) {
+                const connected = await connectBackend();
+                if (!connected) return;
+            }
+
             try {
-                const combinedCode = userSubscriberCode + recipientCode;
-                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(combinedCode));
-                const key = await crypto.subtle.importKey('raw', hashBuffer, { name: 'AES-GCM' }, false, ['encrypt']);
+                recipientCheckSeq += 1;
+                const recipientKeyPayload = await checkRecipientKey(recipientCode, recipientCheckSeq);
+                if (!recipientKeyPayload) {
+                    setNotice('appNotice', 'Cannot send: recipient key is unavailable.', 'error');
+                    return;
+                }
 
-                const iv = crypto.getRandomValues(new Uint8Array(12));
-                const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(message));
-
-                const combined = new Uint8Array([...iv, ...new Uint8Array(encrypted)]);
-                const base64 = btoa(String.fromCharCode(...combined));
+                const envelope = await encryptForRecipient(message, recipientKeyPayload.publicKey);
+                const result = await apiFetch('/api/messages/send', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        senderCode: userSubscriberCode,
+                        recipientCode,
+                        envelope,
+                    }),
+                });
 
                 const output = document.getElementById('encryptedOutput');
-                output.innerHTML = `<div class="success">✓ Message encrypted successfully</div><div style="margin-top: 10px; word-break: break-all;">${base64}</div>`;
+                output.innerHTML = `<div class="success">✓ E2EE message sent</div><div style="margin-top: 10px;">Message ID: ${result.messageId}</div>`;
                 output.classList.add('active');
-                document.getElementById('copyBtn').style.display = 'block';
 
-                addLog('[ENCRYPTION SUCCESS] > AES-256-GCM');
+                appendChatBubble('outgoing', message, `to ${recipientCode}`, result.queuedAt);
+                setNotice('appNotice', 'Sent: encrypted in browser, relay only on server.', 'success');
+                addLog('[SEND] > Browser encrypted message sent to relay');
+                document.getElementById('messageToSend').value = '';
             } catch (error) {
                 addLog(`[ERROR] > ${error.message}`);
+                if (String(error.message).includes('public key not found')) {
+                    setNotice('appNotice', 'Recipient is offline or has not connected yet (no public key).', 'error');
+                } else {
+                    setNotice('appNotice', `Send failed: ${error.message}`, 'error');
+                }
             }
         }
 
         async function decryptMessage() {
-            const senderCode = document.getElementById('senderCode').value;
-            const encryptedMessage = document.getElementById('messageToDecrypt').value;
-
-            if (senderCode.length !== 12 || !/^\d+$/.test(senderCode)) {
-                addLog('[ERROR] > Invalid sender code');
-                return;
-            }
-
-            if (!encryptedMessage) {
-                addLog('[ERROR] > Encrypted message is empty');
-                return;
-            }
-
-            try {
-                const combinedCode = senderCode + userSubscriberCode;
-                const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(combinedCode));
-                const key = await crypto.subtle.importKey('raw', hashBuffer, { name: 'AES-GCM' }, false, ['decrypt']);
-
-                const binaryString = atob(encryptedMessage);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-
-                const iv = bytes.slice(0, 12);
-                const ciphertext = bytes.slice(12);
-
-                const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
-                const message = new TextDecoder().decode(decrypted);
-
-                const output = document.getElementById('decryptedOutput');
-                output.innerHTML = `<div class="success">✓ Message decrypted successfully</div><div style="margin-top: 10px;">${message}</div>`;
-                output.classList.add('active');
-
-                addLog('[DECRYPTION SUCCESS] > AES-256-GCM');
-            } catch (error) {
-                addLog('[DECRYPTION FAILED] > Invalid key or corrupted data');
-            }
-        }
-
-        function copyToClipboard() {
-            const encryptedText = document.getElementById('encryptedOutput').textContent.replace('✓ Message encrypted successfully', '').trim();
-            navigator.clipboard.writeText(encryptedText).then(() => {
-                addLog('[SUCCESS] > Message copied to clipboard');
-                alert('✓ Copied to clipboard!');
-            });
+            await syncInbox();
+            const output = document.getElementById('decryptedOutput');
+            output.innerHTML = '<div class="success">✓ Inbox synced and decrypted locally</div>';
+            output.classList.add('active');
+            setNotice('appNotice', 'Inbox synced from relay.', 'success');
         }
 
         function clearSendForm() {
             document.getElementById('recipientCode').value = '';
             document.getElementById('messageToSend').value = '';
+            document.getElementById('encryptedOutput').innerHTML = '';
             document.getElementById('encryptedOutput').classList.remove('active');
-            document.getElementById('copyBtn').style.display = 'none';
+            recipientKeyIsAvailable = false;
+            setRecipientKeyStatus('Enter recipient code to check E2EE key...', '');
         }
 
         function clearDecryptForm() {
-            document.getElementById('senderCode').value = '';
-            document.getElementById('messageToDecrypt').value = '';
+            document.getElementById('messageToDecrypt').value = 'Incoming messages are encrypted end-to-end and decrypted only in your browser';
+            document.getElementById('decryptedOutput').innerHTML = '';
             document.getElementById('decryptedOutput').classList.remove('active');
         }
 
@@ -537,10 +1079,22 @@
             if (e.key === 'Enter') checkPassword();
         });
 
+        window.addEventListener('beforeunload', () => {
+            if (inboxPollTimer) clearInterval(inboxPollTimer);
+        });
+
         window.addEventListener('load', () => {
             if (!verifyDomain()) return;
+            const backendInput = document.getElementById('backendUrl');
+            if (backendInput && !backendInput.value.trim()) {
+                backendInput.value = DEFAULT_BACKEND_URL;
+            }
+            document.getElementById('recipientCode').addEventListener('input', triggerRecipientKeyCheck);
+            recipientKeyIsAvailable = false;
+            setRecipientKeyStatus('Enter recipient code to check E2EE key...', '');
+            document.getElementById('messageToDecrypt').value = 'Incoming messages are encrypted end-to-end and decrypted only in your browser';
             addLog('[SYSTEM BOOT] > 3NIGMA 1.0 initialized');
-            addLog('[CRYPTO] > WebCrypto API ready');
+            addLog('[E2EE] > Waiting for backend connection and key publish');
         });
     </script>
 </body>
